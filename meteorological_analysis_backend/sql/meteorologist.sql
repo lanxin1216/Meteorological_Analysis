@@ -6,6 +6,7 @@ USE meteorologist;
 CREATE EXTERNAL TABLE weather_analysis
 (
     data_time      TIMESTAMP,
+    year           INT,
     month          INT,
     day            INT,
     hour           INT,
@@ -15,12 +16,19 @@ CREATE EXTERNAL TABLE weather_analysis
     wind_direction DOUBLE,
     wind_speed     DOUBLE
 )
-    PARTITIONED BY (year INT)
+    PARTITIONED BY (p_year INT) -- 单独的分区字段
     ROW FORMAT DELIMITED
         FIELDS TERMINATED BY ','
-    STORED AS TEXTFILE
     LOCATION '/weather/hive/weather_analysis'
     TBLPROPERTIES (
         'skip.header.line.count' = '1',
         'serialization.null.format' = ''
         );
+
+SELECT hour, temperature
+FROM weather_analysis
+WHERE p_year = 2021
+  AND year = 2021
+  AND month = 1
+  AND day = 1
+ORDER BY hour;

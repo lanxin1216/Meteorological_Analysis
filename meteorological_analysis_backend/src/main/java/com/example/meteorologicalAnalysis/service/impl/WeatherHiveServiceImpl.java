@@ -2,7 +2,7 @@ package com.example.meteorologicalAnalysis.service.impl;
 
 import com.example.meteorologicalAnalysis.common.BusinessException;
 import com.example.meteorologicalAnalysis.constant.ErrorCode;
-import com.example.meteorologicalAnalysis.service.HiveService;
+import com.example.meteorologicalAnalysis.dao.HiveDao;
 import com.example.meteorologicalAnalysis.service.WeatherHiveService;
 import com.example.meteorologicalAnalysis.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class WeatherHiveServiceImpl implements WeatherHiveService {
     private HdfsUtil hdfsUtil;
 
     @Autowired
-    private HiveService hiveService;
+    private HiveDao hiveService;
 
     @Override
     public String uploadAndImport(MultipartFile file, int year) {

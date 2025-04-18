@@ -2,7 +2,7 @@ package com.example.meteorologicalAnalysis.controller;
 
 import com.example.meteorologicalAnalysis.common.BaseResponse;
 import com.example.meteorologicalAnalysis.common.ResultUtils;
-import com.example.meteorologicalAnalysis.service.HiveService;
+import com.example.meteorologicalAnalysis.dao.HiveDao;
 import com.example.meteorologicalAnalysis.util.HdfsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ public class TestController {
     private HdfsUtil hdfsUtil;
 
     @Autowired
-    private HiveService hiveTestService;
+    private HiveDao hiveTestService;
 
     /**
      * 测试HDFS连接

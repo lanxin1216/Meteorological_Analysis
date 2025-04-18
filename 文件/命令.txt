@@ -2,6 +2,7 @@ hive启动：bin/hive --service metastore &
 	bin/hive --service hiveserver2 &
 	bin/hive
 
+温度、露点温度、气压、风向
 
 数据下载：美国国家气候数据中心（NCDC）
 	ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite/
@@ -17,4 +18,3 @@ hdfs授权：
 数据库清空：删除文件：hdfs dfs -rm -r /weather/hive
 	  删除表：USE meteorologist;
 		DROP TABLE weather_analysis;
-

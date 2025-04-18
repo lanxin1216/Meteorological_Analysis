@@ -1,9 +1,9 @@
-package com.example.meteorologicalAnalysis.service;
+package com.example.meteorologicalAnalysis.dao;
 
 /**
- * hive 操作服务
+ * hive 基础操作服务
  */
-public interface HiveService {
+public interface HiveDao {
 
     // 测试连接
     void testHiveConnection();
