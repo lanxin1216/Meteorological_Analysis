@@ -1,0 +1,20 @@
+hive启动：bin/hive --service metastore &
+	bin/hive --service hiveserver2 &
+	bin/hive
+
+
+数据下载：美国国家气候数据中心（NCDC）
+	ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite/
+	获取哈尔滨市监测站编号：https://www.ncei.noaa.gov/maps/daily/
+	哈尔滨市编号：509530
+
+hdfs授权：
+	hdfs dfs -chmod -R 777 /weather/hive/weather_analysis
+	hdfs dfs -chmod -R 777 /weather/hive
+	hdfs dfs -chmod 777 /weather/raw
+	hdfs dfs -chmod 777 /weather
+
+数据库清空：删除文件：hdfs dfs -rm -r /weather/hive
+	  删除表：USE meteorologist;
+		DROP TABLE weather_analysis;
+
