@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: meteorological_analysis_backend
+  # hive 配置
+  datasource:
+    hive:
+      url: jdbc:hive2://masters:10000/meteorologist
+      username: hive
+      password:
+      driver-class-name: org.apache.hive.jdbc.HiveDriver
+
+# hadoop 配置
+hadoop:
+  hdfs:
+    uri: hdfs://masters:9000
+  user:
+    name: root
