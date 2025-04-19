@@ -2,44 +2,68 @@
 /* eslint-disable */
 import request from "@/request";
 
-/** getByDate GET /api/basicAnalysis/date */
-export async function getByDateUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getByDateUsingGETParams,
-  options?: { [key: string]: any }
-) {
-  return request<API.BaseResponseListWeatherPoint_>("/api/basicAnalysis/date", {
-    method: "GET",
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
-}
-
-/** getByDay GET /api/basicAnalysis/day */
+/** getByDay GET /api/basicAnalysis/ByDay */
 export async function getByDayUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getByDayUsingGETParams,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseListWeatherPoint_>("/api/basicAnalysis/day", {
-    method: "GET",
-    params: {
-      ...params,
-    },
-    ...(options || {}),
-  });
+  return request<API.BaseResponseListWeatherPoint_>(
+    "/api/basicAnalysis/ByDay",
+    {
+      method: "GET",
+      params: {
+        ...params,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
-/** getByMonth GET /api/basicAnalysis/month */
+/** getByMonth GET /api/basicAnalysis/ByMonth */
 export async function getByMonthUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getByMonthUsingGETParams,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseListWeatherPoint_>(
-    "/api/basicAnalysis/month",
+    "/api/basicAnalysis/ByMonth",
+    {
+      method: "GET",
+      params: {
+        ...params,
+      },
+      ...(options || {}),
+    }
+  );
+}
+
+/** getByYear GET /api/basicAnalysis/ByYear */
+export async function getByYearUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getByYearUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseListWeatherPoint_>(
+    "/api/basicAnalysis/ByYear",
+    {
+      method: "GET",
+      params: {
+        ...params,
+      },
+      ...(options || {}),
+    }
+  );
+}
+
+/** getTop500ByYear GET /api/basicAnalysis/getAllData */
+export async function getTop500ByYearUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getTop500ByYearUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseListWeatherDataVO_>(
+    "/api/basicAnalysis/getAllData",
     {
       method: "GET",
       params: {

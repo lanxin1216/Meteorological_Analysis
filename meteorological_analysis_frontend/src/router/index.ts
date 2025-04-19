@@ -1,7 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from "@/page/HomePage.vue";
-import UploadDataPage from "@/page/UploadDataPage.vue";
-import AboutPage from "@/page/AboutPage.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,12 +12,12 @@ const router = createRouter({
         {
             path: '/uploadData',
             name: 'uploadData',
-            component: UploadDataPage,
+            component: () => import('@/page/UploadDataPage.vue'),
         },
         {
-            path: '/about',
-            name: 'about',
-            component: AboutPage,
+            path: '/dataView',
+            name: 'dataView',
+            component: () => import('@/page/MeteorologicalDataPage.vue'),
         },
     ],
 })

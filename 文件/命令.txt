@@ -1,3 +1,4 @@
+hadoop启动：start-all.sh
 hive启动：bin/hive --service metastore &
 	bin/hive --service hiveserver2 &
 	bin/hive

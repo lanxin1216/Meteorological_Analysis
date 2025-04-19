@@ -4,7 +4,7 @@
       <a-col flex="400px">
         <RouterLink to="/">
           <div class="title-bar">
-            <div class="title">哈尔滨市&气象历史数据分析平台</div>
+            <div class="title">哈尔滨市&历史气象数据分析平台</div>
           </div>
         </RouterLink>
       </a-col>
@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import {h, ref} from 'vue'
-import {HomeOutlined} from '@ant-design/icons-vue'
+import {LineChartOutlined, UploadOutlined, SmileOutlined, GoldFilled} from '@ant-design/icons-vue'
 import {type MenuProps} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
 
@@ -30,19 +30,21 @@ const current = ref<string[]>(['home'])
 const items = ref<MenuProps['items']>([
   {
     key: '/',
-    icon: () => h(HomeOutlined),
-    label: '首页',
-    title: '首页',
+    icon: () => h(LineChartOutlined),
+    label: '数据分析',
+    title: '数据分析',
+  },
+  {
+    key: '/dataView',
+    icon: () => h(GoldFilled),
+    label: '气象数据',
+    title: '气象数据',
   },
   {
     key: '/uploadData',
+    icon: () => h(UploadOutlined),
     label: '上传数据',
     title: '上传数据',
-  },
-  {
-    key: '/about',
-    label: '关于',
-    title: '关于',
   }
 ])
 

@@ -1,4 +1,10 @@
 declare namespace API {
+  type BaseResponseListWeatherDataVO_ = {
+    code?: number;
+    data?: WeatherDataVO[];
+    message?: string;
+  };
+
   type BaseResponseListWeatherPoint_ = {
     code?: number;
     data?: WeatherPoint[];
@@ -17,7 +23,7 @@ declare namespace API {
     message?: string;
   };
 
-  type getByDateUsingGETParams = {
+  type getByDayUsingGETParams = {
     /** day */
     day: number;
     /** month */
@@ -28,7 +34,7 @@ declare namespace API {
     year: number;
   };
 
-  type getByDayUsingGETParams = {
+  type getByMonthUsingGETParams = {
     /** month */
     month: number;
     /** type */
@@ -37,9 +43,14 @@ declare namespace API {
     year: number;
   };
 
-  type getByMonthUsingGETParams = {
+  type getByYearUsingGETParams = {
     /** type */
     type: string;
+    /** year */
+    year: number;
+  };
+
+  type getTop500ByYearUsingGETParams = {
     /** year */
     year: number;
   };
@@ -47,6 +58,19 @@ declare namespace API {
   type uploadAndImportUsingPOSTParams = {
     /** year */
     year: number;
+  };
+
+  type WeatherDataVO = {
+    dataTime?: string;
+    day?: number;
+    dewPoint?: number;
+    hour?: number;
+    month?: number;
+    pressure?: number;
+    temperature?: number;
+    windDirection?: number;
+    windSpeed?: number;
+    year?: number;
   };
 
   type WeatherPoint = {
