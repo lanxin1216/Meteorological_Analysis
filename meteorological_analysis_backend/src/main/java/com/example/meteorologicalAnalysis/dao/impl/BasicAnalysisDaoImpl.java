@@ -16,6 +16,11 @@ public class BasicAnalysisDaoImpl implements BasicAnalysisDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
+    public List<Map<String, Object>> findTop500ByYear(int year) {
+        String sql = "SELECT * FROM weather_analysis WHERE year = ? LIMIT 500";
+        return jdbcTemplate.queryForList(sql, year);
+    }
 
     @Override
     public List<Map<String, Object>> queryByHour(int year, int month, int day, String column) {

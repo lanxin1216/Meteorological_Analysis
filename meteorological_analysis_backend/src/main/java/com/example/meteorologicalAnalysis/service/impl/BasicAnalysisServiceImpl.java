@@ -2,14 +2,17 @@ package com.example.meteorologicalAnalysis.service.impl;
 
 import com.example.meteorologicalAnalysis.constant.WeatherDataType;
 import com.example.meteorologicalAnalysis.dao.BasicAnalysisDao;
+import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 import com.example.meteorologicalAnalysis.service.BasicAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BasicAnalysisServiceImpl implements BasicAnalysisService {
@@ -17,6 +20,26 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
     @Autowired
     private BasicAnalysisDao basicAnalysisDao;
 
+    @Override
+    public List<WeatherDataVO> getTop500ByYear(int year) {
+        List<Map<String, Object>> rawData = basicAnalysisDao.findTop500ByYear(year);
+        return convertToVO(rawData);
+    }
+
+    private List<WeatherDataVO> convertToVO(List<Map<String, Object>> rawData) {
+        return rawData.stream().map(map -> new WeatherDataVO(
+                (Timestamp) map.get("data_time"),
+                (Integer) map.get("year"),
+                (Integer) map.get("month"),
+                (Integer) map.get("day"),
+                (Integer) map.get("hour"),
+                (Double) map.get("temperature"),
+                (Double) map.get("dew_point"),
+                (Double) map.get("pressure"),
+                (Double) map.get("wind_direction"),
+                (Double) map.get("wind_speed")
+        )).collect(Collectors.toList());
+    }
     @Override
     public List<WeatherPoint> getWeatherPointByDate(int year, int month, int day, WeatherDataType type) {
         String column = type.getColumn();

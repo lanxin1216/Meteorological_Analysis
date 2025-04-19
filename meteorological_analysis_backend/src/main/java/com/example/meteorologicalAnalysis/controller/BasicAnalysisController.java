@@ -3,10 +3,14 @@ package com.example.meteorologicalAnalysis.controller;
 import com.example.meteorologicalAnalysis.common.BaseResponse;
 import com.example.meteorologicalAnalysis.common.ResultUtils;
 import com.example.meteorologicalAnalysis.constant.WeatherDataType;
+import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 import com.example.meteorologicalAnalysis.service.BasicAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,6 +20,15 @@ public class BasicAnalysisController {
 
     @Autowired
     private BasicAnalysisService basicAnalysisService;
+
+    /**
+     * 获取某年的500条
+     */
+    @GetMapping("/getAllData")
+    public BaseResponse<List<WeatherDataVO>> getTop500ByYear(@RequestParam int year) {
+        List<WeatherDataVO> weatherAnalysisList = basicAnalysisService.getTop500ByYear(year);
+        return ResultUtils.success(weatherAnalysisList);
+    }
 
     /**
      * 获取某天的每小时数据

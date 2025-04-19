@@ -9,6 +9,11 @@ import java.util.Map;
 public interface BasicAnalysisDao {
 
     /**
+     * 查询指定年份的前五百条数据
+     */
+    List<Map<String, Object>> findTop500ByYear(int year);
+
+    /**
      * 查询某天按小时的气象值（指定字段）
      */
     List<Map<String, Object>> queryByHour(int year, int month, int day, String column);

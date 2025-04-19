@@ -1,11 +1,18 @@
 package com.example.meteorologicalAnalysis.service;
 
 import com.example.meteorologicalAnalysis.constant.WeatherDataType;
+import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 
 import java.util.List;
 
 public interface BasicAnalysisService {
+
+    /**
+     * 获取某年的前500条数据
+     */
+
+     List<WeatherDataVO> getTop500ByYear(int year);
 
     /**
      * 获取指定日期的时段气象变化
