@@ -1,6 +1,6 @@
 <template>
   <div id="hourlyDataChart">
-    <h2 class="chart-title">小时数据</h2>
+    <h2 class="chart-title">指定日期数据</h2>
     <div class="input-container">
       <a-select
           v-model:value="selectedMonth"
@@ -29,7 +29,7 @@
           description="暂无数据"
           class="chart-empty"
       />
-      <div v-else ref="chartRef" class="chart"></div>
+      <div v-show="!isEmpty && !chartLoading" ref="chartRef" class="chart"></div>
     </a-spin>
   </div>
 </template>
@@ -38,7 +38,7 @@
 import {ref, onMounted, watch, computed} from 'vue';
 import * as echarts from 'echarts';
 import {getByDayUsingGet} from '@/api/basicAnalysisController.ts';
-import type {WeatherDataType} from "@/constant/WeatherDataType.ts";
+import {type WeatherDataType, WeatherDataTypeLabel} from "@/constant/WeatherDataType.ts";
 import dayjs from "dayjs";
 import {message} from "ant-design-vue";
 
@@ -129,10 +129,11 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
   // 处理数据格式
   const xAxisData = data.map(item => item.label);
   const seriesData = data.map(item => item.value);
+  const typeName = WeatherDataTypeLabel[props.type];
 
   const option = {
     title: {
-      text: `${props.year?.format('YYYY')}年${selectedMonth.value}月${selectedDay.value}日小时数据`,
+      text: `${props.year?.format('YYYY')}年${selectedMonth.value}月${selectedDay.value}日${typeName}数据`,
       left: 'center',
       textStyle: {
         fontSize: 16
@@ -163,7 +164,7 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
       name: '数值'
     },
     series: [{
-      name: '小时数据',
+      name: typeName,
       type: 'line',
       data: seriesData, // 使用处理后的series数据
       itemStyle: {

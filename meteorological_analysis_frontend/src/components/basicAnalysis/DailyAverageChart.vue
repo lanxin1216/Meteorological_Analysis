@@ -20,7 +20,7 @@
           description="暂无数据"
           class="chart-empty"
       />
-      <div v-else ref="chartRef" class="chart"></div>
+      <div v-show="!isEmpty && !chartLoading" ref="chartRef" class="chart"></div>
     </a-spin>
   </div>
 </template>
@@ -29,7 +29,7 @@
 import {ref, onMounted, watch, nextTick} from 'vue';
 import * as echarts from 'echarts';
 import {getByMonthUsingGet} from '@/api/basicAnalysisController.ts';
-import type {WeatherDataType} from "@/constant/WeatherDataType.ts";
+import {type WeatherDataType, WeatherDataTypeLabel} from "@/constant/WeatherDataType.ts";
 import dayjs from "dayjs";
 import {message} from "ant-design-vue";
 
@@ -114,10 +114,11 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
     const dayB = parseInt(b.label.replace('日', ''));
     return dayA - dayB;
   });
+  const typeName = WeatherDataTypeLabel[props.type];
 
   const option = {
     title: {
-      text: `${props.year?.format('YYYY')}年${selectedMonth.value}月每天平均数据`,
+      text: `${props.year?.format('YYYY')}年${selectedMonth.value}月每天平均${typeName}数据`,
       left: 'center',
       textStyle: {
         fontSize: 16
@@ -151,7 +152,7 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
       }
     },
     series: [{
-      name: '每天平均',
+      name: '平均' + typeName,
       type: 'line',
       data: sortedData.map(item => item.value),
       itemStyle: {
@@ -221,7 +222,7 @@ defineExpose({
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.chart-title {
+#dailyAverageChart .chart-title {
   text-align: center;
   margin-bottom: 16px;
   font-size: 18px;
@@ -229,7 +230,7 @@ defineExpose({
   color: rgba(0, 0, 0, 0.85);
 }
 
-.input-container {
+#dailyAverageChart .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -237,13 +238,13 @@ defineExpose({
   gap: 8px;
 }
 
-.chart {
+#dailyAverageChart .chart {
   width: 100%;
   height: 400px;
   min-height: 400px;
 }
 
-.chart-empty {
+#dailyAverageChart .chart-empty {
   padding: 40px 0;
   text-align: center;
   background: #fff;

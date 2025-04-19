@@ -8,6 +8,7 @@ import com.example.meteorologicalAnalysis.dao.HiveDao;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 import com.example.meteorologicalAnalysis.service.BasicAnalysisService;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class BasicAnalysisServiceImpl implements BasicAnalysisService {
 
     @Autowired
@@ -39,8 +41,16 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
     }
 
     private List<WeatherDataVO> convertToVO(List<Map<String, Object>> rawData) {
+        for (Map<String, Object> map : rawData) {
+            System.out.println("Returned keys: " + map.keySet());
+        }
+
+
+        System.out.println("--------------------");
+        System.out.println("Map:" + rawData.get(0));
+
         return rawData.stream().map(map -> new WeatherDataVO(
-                (DateTime) map.get("data_time"),
+                ((Timestamp) map.get("data_time")).toLocalDateTime(),
                 (Integer) map.get("year"),
                 (Integer) map.get("month"),
                 (Integer) map.get("day"),
@@ -52,6 +62,7 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
                 (Double) map.get("wind_speed")
         )).collect(Collectors.toList());
     }
+
     @Override
     public List<WeatherPoint> getWeatherPointByDate(int year, int month, int day, WeatherDataType type) {
         // 先检查分区

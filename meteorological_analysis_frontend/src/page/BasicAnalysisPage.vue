@@ -39,16 +39,16 @@
              type="warning"/>
 
     <div class="chart-container">
-<!--      <MonthlyAverageChart-->
-<!--          ref="monthlyChartRef"-->
-<!--          :year="searchForm.year"-->
-<!--          :type="searchForm.type"-->
-<!--      />-->
-<!--      <DailyAverageChart-->
-<!--          ref="dailyChartRef"-->
-<!--          :year="searchForm.year"-->
-<!--          :type="searchForm.type"-->
-<!--      />-->
+      <MonthlyAverageChart
+          ref="monthlyChartRef"
+          :year="searchForm.year"
+          :type="searchForm.type"
+      />
+      <DailyAverageChart
+          ref="dailyChartRef"
+          :year="searchForm.year"
+          :type="searchForm.type"
+      />
       <HourlyDataChart
           ref="hourlyChartRef"
           :year="searchForm.year"

@@ -7,7 +7,7 @@
           description="暂无数据"
           class="chart-empty"
       />
-      <div v-else ref="chartRef" class="chart"></div>
+      <div v-show="!isEmpty && !chartLoading" ref="chartRef" class="chart"></div>
     </a-spin>
   </div>
 </template>
@@ -16,7 +16,7 @@
 import {ref, onMounted, watch, nextTick} from 'vue';
 import * as echarts from 'echarts';
 import { getByYearUsingGet } from '@/api/basicAnalysisController.ts';
-import type {WeatherDataType} from "@/constant/WeatherDataType.ts";
+import {type WeatherDataType, WeatherDataTypeLabel} from "@/constant/WeatherDataType.ts";
 import dayjs from "dayjs";
 import {message} from "ant-design-vue";
 
@@ -109,13 +109,14 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
     const monthB = parseInt(b.label.replace('月', ''));
     return monthA - monthB;
   });
+  const typeName = WeatherDataTypeLabel[props.type];
 
   const unit = getUnitByType(props.type);
   const seriesName = `每月平均${unit}`;
 
   const option = {
     title: {
-      text: `${props.year?.format('YYYY')}年每月平均数据`,
+      text: `${props.year?.format('YYYY')}年每月平均${typeName}数据`,
       left: 'center',
       textStyle: {
         fontSize: 16,
@@ -236,7 +237,7 @@ defineExpose({
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.chart-title {
+#monthlyAverageChart .chart-title {
   text-align: center;
   margin-bottom: 16px;
   font-size: 18px;
@@ -244,13 +245,13 @@ defineExpose({
   color: rgba(0, 0, 0, 0.85);
 }
 
-.chart {
+#monthlyAverageChart .chart {
   width: 100%;
   height: 450px;
   min-height: 450px;
 }
 
-.chart-empty {
+#monthlyAverageChart .chart-empty {
   padding: 40px 0;
   text-align: center;
   background: #fff;
