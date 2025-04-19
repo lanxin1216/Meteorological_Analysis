@@ -2,13 +2,14 @@ package com.example.meteorologicalAnalysis.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.joda.time.DateTime;
 
 import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 public class WeatherDataVO {
-    private Timestamp dataTime;
+    private DateTime dataTime;
     private Integer year;
     private Integer month;
     private Integer day;

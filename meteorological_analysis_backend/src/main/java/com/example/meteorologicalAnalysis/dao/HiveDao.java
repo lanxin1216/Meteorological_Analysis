@@ -17,5 +17,10 @@ public interface HiveDao {
      * 数据导入表
      */
     void loadDataIntoWeatherAnalysis(String hdfsPath, int year);
+
+    /**
+     * 检查分区是否存在
+     */
+    boolean checkYearPartitionExists(int year);
 }
 

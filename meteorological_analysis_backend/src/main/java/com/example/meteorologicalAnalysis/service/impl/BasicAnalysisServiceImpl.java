@@ -1,10 +1,14 @@
 package com.example.meteorologicalAnalysis.service.impl;
 
+import com.example.meteorologicalAnalysis.common.BusinessException;
+import com.example.meteorologicalAnalysis.constant.ErrorCode;
 import com.example.meteorologicalAnalysis.constant.WeatherDataType;
 import com.example.meteorologicalAnalysis.dao.BasicAnalysisDao;
+import com.example.meteorologicalAnalysis.dao.HiveDao;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 import com.example.meteorologicalAnalysis.service.BasicAnalysisService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +24,23 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
     @Autowired
     private BasicAnalysisDao basicAnalysisDao;
 
+    @Autowired
+    private HiveDao hiveDao;
+
     @Override
     public List<WeatherDataVO> getTop500ByYear(int year) {
+        // 先检查分区
+        if (!hiveDao.checkYearPartitionExists(year)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "查询年份数据不存在");
+        }
+
         List<Map<String, Object>> rawData = basicAnalysisDao.findTop500ByYear(year);
         return convertToVO(rawData);
     }
 
     private List<WeatherDataVO> convertToVO(List<Map<String, Object>> rawData) {
         return rawData.stream().map(map -> new WeatherDataVO(
-                (Timestamp) map.get("data_time"),
+                (DateTime) map.get("data_time"),
                 (Integer) map.get("year"),
                 (Integer) map.get("month"),
                 (Integer) map.get("day"),
@@ -42,6 +54,11 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
     }
     @Override
     public List<WeatherPoint> getWeatherPointByDate(int year, int month, int day, WeatherDataType type) {
+        // 先检查分区
+        if (!hiveDao.checkYearPartitionExists(year)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "查询年份数据不存在");
+        }
+        // 查询数据
         String column = type.getColumn();
         List<Map<String, Object>> rawList = basicAnalysisDao.queryByHour(year, month, day, column);
         // 封装
@@ -57,6 +74,11 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
 
     @Override
     public List<WeatherPoint> getWeatherPointByDay(int year, int month, WeatherDataType type) {
+        // 先检查分区
+        if (!hiveDao.checkYearPartitionExists(year)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "查询年份数据不存在");
+        }
+
         String column = type.getColumn();
         List<Map<String, Object>> rawList = basicAnalysisDao.queryByDay(year, month, column);
 
@@ -72,6 +94,11 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
 
     @Override
     public List<WeatherPoint> getWeatherPointByMonth(int year, WeatherDataType type) {
+        // 先检查分区
+        if (!hiveDao.checkYearPartitionExists(year)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "查询年份数据不存在");
+        }
+
         String column = type.getColumn();
         List<Map<String, Object>> rawList = basicAnalysisDao.queryByMonth(year, column);
         List<WeatherPoint> resultList = new ArrayList<>();

@@ -33,8 +33,8 @@ public class BasicAnalysisController {
     /**
      * 获取某天的每小时数据
      */
-    @GetMapping("/date")
-    public BaseResponse<List<WeatherPoint>> getByDate(
+    @GetMapping("/ByDay")
+    public BaseResponse<List<WeatherPoint>> getByDay(
             @RequestParam int year,
             @RequestParam int month,
             @RequestParam int day,
@@ -49,8 +49,8 @@ public class BasicAnalysisController {
     /**
      * 获取某月每天的平均数据
      */
-    @GetMapping("/day")
-    public BaseResponse<List<WeatherPoint>> getByDay(
+    @GetMapping("/ByMonth")
+    public BaseResponse<List<WeatherPoint>> getByMonth(
             @RequestParam int year,
             @RequestParam int month,
             @RequestParam String type
@@ -63,8 +63,8 @@ public class BasicAnalysisController {
     /**
      * 获取某年每月的平均数据
      */
-    @GetMapping("/month")
-    public BaseResponse<List<WeatherPoint>> getByMonth(
+    @GetMapping("/ByYear")
+    public BaseResponse<List<WeatherPoint>> getByYear(
             @RequestParam int year,
             @RequestParam String type
     ) {
