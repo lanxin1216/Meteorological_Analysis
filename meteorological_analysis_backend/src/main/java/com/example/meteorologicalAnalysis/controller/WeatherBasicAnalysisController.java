@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 基本分析
+ */
 @RestController
-@RequestMapping("/api/basicAnalysis")
-public class BasicAnalysisController {
+@RequestMapping("/api/weather/basicAnalysis")
+public class WeatherBasicAnalysisController {
 
     @Autowired
     private BasicAnalysisService basicAnalysisService;

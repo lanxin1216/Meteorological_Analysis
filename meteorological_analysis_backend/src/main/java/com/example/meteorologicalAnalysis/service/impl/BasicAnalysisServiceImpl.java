@@ -9,10 +9,9 @@ import com.example.meteorologicalAnalysis.pojo.vo.WeatherDataVO;
 import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 import com.example.meteorologicalAnalysis.service.BasicAnalysisService;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +22,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BasicAnalysisServiceImpl implements BasicAnalysisService {
 
-    @Autowired
+    @Resource
     private BasicAnalysisDao basicAnalysisDao;
 
-    @Autowired
+    @Resource
     private HiveDao hiveDao;
 
     @Override

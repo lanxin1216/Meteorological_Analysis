@@ -6,12 +6,14 @@ import com.example.meteorologicalAnalysis.pojo.vo.WeatherPoint;
 
 import java.util.List;
 
+/**
+ * 基本分析
+ */
 public interface BasicAnalysisService {
 
     /**
      * 获取某年的前500条数据
      */
-
      List<WeatherDataVO> getTop500ByYear(int year);
 
     /**

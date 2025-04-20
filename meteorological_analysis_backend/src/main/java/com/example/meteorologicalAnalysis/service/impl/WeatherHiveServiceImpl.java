@@ -6,20 +6,20 @@ import com.example.meteorologicalAnalysis.dao.HiveDao;
 import com.example.meteorologicalAnalysis.service.WeatherHiveService;
 import com.example.meteorologicalAnalysis.util.HdfsUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 @Service
 @Slf4j
 public class WeatherHiveServiceImpl implements WeatherHiveService {
 
-    @Autowired
+    @Resource
     private HdfsUtil hdfsUtil;
 
-    @Autowired
+    @Resource
     private HiveDao hiveService;
 
     @Override
