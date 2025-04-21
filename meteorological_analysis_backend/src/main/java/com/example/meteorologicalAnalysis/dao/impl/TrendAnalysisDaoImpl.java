@@ -63,8 +63,7 @@ public class TrendAnalysisDaoImpl implements TrendAnalysisDao {
                      "        WHEN month IN (6,7,8) THEN '夏季' " +
                      "        WHEN month IN (9,10,11) THEN '秋季' " +
                      "        ELSE '冬季' " +
-                     "    END " +
-                     "ORDER BY season";
+                     "    END ";
 
         return jdbcTemplate.queryForList(sql, year);
     }

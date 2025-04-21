@@ -21,10 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, watch} from 'vue';
+import {ref, onMounted, watch, nextTick} from 'vue';
 import * as echarts from 'echarts';
 import {getStrongWindDaysUsingGet} from '@/api/weatherAnalysisExtremeController.ts';
 import {message} from 'ant-design-vue';
+import {mockStrongWindDays} from "@/mock/mockStrongWindDays.ts";
 
 const emit = defineEmits(['update:threshold']);
 
@@ -48,10 +49,14 @@ const resizeChart = () => {
 const fetchData = async () => {
   try {
     loading.value = true;
-    const res = await getStrongWindDaysUsingGet({threshold: threshold.value});
-    if (res.data.code === 0) {
+    // const res = await getStrongWindDaysUsingGet({threshold: threshold.value});
+    // todo mock数据
+    const res =  { data: mockStrongWindDays};
+      if (res.data.code === 0) {
       data.value = res.data.data;
-      updateChart();
+        await nextTick();   // 等待 DOM 挂载
+        initChart();        // 初始化图表
+        updateChart();      // 设置图表数据
     } else {
       message.error(res.data.message || '获取强风数据失败');
     }
@@ -131,7 +136,6 @@ watch(threshold, (newVal) => {
 });
 
 onMounted(() => {
-  initChart();
   fetchData();
 });
 

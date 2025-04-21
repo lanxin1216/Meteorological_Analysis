@@ -16,6 +16,7 @@ import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import { getMonthlyTemperatureTrendUsingGet } from "@/api/weatherTrendController.ts";
 import dayjs from "dayjs";
+import {mockMonthlyTemperatureTrend} from "@/mock/mockMonthlyTemperatureTrend.ts";
 
 const props = defineProps<{ year: dayjs.Dayjs }>();
 
@@ -28,14 +29,16 @@ const isEmpty = ref(false);
 async function renderChart(year: dayjs.Dayjs) {
   const newYear = props.year.format('YYYY')
   loading.value = true;
-  const res = await getMonthlyTemperatureTrendUsingGet({ year: newYear });
-  if (res.data.code === 0 && chartRef.value) {
+  // const res = await getMonthlyTemperatureTrendUsingGet({ year: newYear });
+  // todo mock数据
+  const res =  { data: mockMonthlyTemperatureTrend};
+    if (res.data.code === 0 && chartRef.value) {
     isEmpty.value = res.data.data?.length === 0;
     if (!isEmpty.value) {
       const xData = res.data.data.map((item) => `${item.month}月`);
       const yData = res.data.data.map((item) => item.avgTemp as number);
       const option = {
-        title: { text: `${year} 年月度平均气温` },
+        title: { text: `${newYear} 年月度平均气温` },
         tooltip: { trigger: 'axis' },
         xAxis: { type: 'category', data: xData },
         yAxis: { type: 'value', name: '温度 (°C)' },

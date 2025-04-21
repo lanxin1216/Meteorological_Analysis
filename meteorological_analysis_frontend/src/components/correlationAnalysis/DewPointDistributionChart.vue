@@ -16,6 +16,7 @@ import {ref, watch, onMounted} from 'vue'
 import * as echarts from 'echarts'
 import {getTempDewPointDistributionUsingGet} from "@/api/weatherCorrelationAnalysisController.ts";
 import dayjs from "dayjs";
+import {mockTempDewPointData} from "@/mock/mockTempDewPointData.ts";
 
 const props = defineProps<{ year: dayjs.Dayjs }>()
 
@@ -29,7 +30,10 @@ const fetchData = async () => {
   if (!props.year) return
   loading.value = true
   const newYear = props.year.format('YYYY')
-  const res = await getTempDewPointDistributionUsingGet({year: newYear})
+  // todo API调用
+  // const res = await getTempDewPointDistributionUsingGet({year: newYear})
+  // 开发测试时使用模拟数据
+  const res = { data: mockTempDewPointData }
   if (res.data.code === 0) {
     isEmpty.value = res.data.data?.length === 0
     renderChart(res.data.data)

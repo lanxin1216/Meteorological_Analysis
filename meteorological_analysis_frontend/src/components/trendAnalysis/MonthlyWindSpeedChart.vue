@@ -16,6 +16,7 @@ import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import { getMonthlyWindSpeedUsingGet } from "@/api/weatherTrendController.ts";
 import dayjs from "dayjs";
+import {mockMonthlyWindSpeed} from "@/mock/mockMonthlyWindSpeed.ts";
 
 const props = defineProps<{ year: dayjs.Dayjs }>();
 
@@ -28,14 +29,16 @@ const isEmpty = ref(false);
 async function renderChart(year: dayjs.Dayjs) {
   const newYear = props.year.format('YYYY')
   loading.value = true;
-  const res = await getMonthlyWindSpeedUsingGet({ year: newYear });
+  // const res = await getMonthlyWindSpeedUsingGet({ year: newYear });
+  // todo mock数据
+  const res =  { data: mockMonthlyWindSpeed}
   if (res.data.code === 0 && chartRef.value) {
     isEmpty.value = res.data.data?.length === 0;
     if (!isEmpty.value) {
       const xData = res.data.data.map((item) => `${item.month}月`);
       const yData = res.data.data.map((item) => item.avgSpeed);
       const option = {
-        title: { text: `${year} 年月度平均风速` },
+        title: { text: `${newYear} 年月度平均风速` },
         tooltip: { trigger: 'axis' },
         xAxis: { type: 'category', data: xData },
         yAxis: { type: 'value', name: '风速 (m/s)' },

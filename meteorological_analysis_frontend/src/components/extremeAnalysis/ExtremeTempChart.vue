@@ -34,11 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import {ref, onMounted, watch, nextTick} from 'vue';
 import * as echarts from 'echarts';
-import { getExtremeTemperaturesUsingGet } from '@/api/weatherAnalysisExtremeController.ts';
-import { message } from 'ant-design-vue';
+import {getExtremeTemperaturesUsingGet} from '@/api/weatherAnalysisExtremeController.ts';
+import {message} from 'ant-design-vue';
 import dayjs from 'dayjs';
+import {mockExtremeTemperatures} from "@/mock/mockExtremeTemperatures.ts";
 
 const emit = defineEmits(['update:year']);
 
@@ -65,10 +66,14 @@ const fetchData = async () => {
   try {
     loading.value = true;
     const yearValue = year.value.year();
-    const res = await getExtremeTemperaturesUsingGet({ year: yearValue });
+    // const res = await getExtremeTemperaturesUsingGet({ year: yearValue });
+    // todo mock数据
+    const res = {data: mockExtremeTemperatures};
     if (res.data.code === 0) {
       data.value = res.data.data;
-      updateChart();
+      await nextTick();   // 等待 DOM 挂载
+      initChart();        // 初始化图表
+      updateChart();      // 设置图表数据
     } else {
       message.error(res.data.message || '获取极端温度数据失败');
     }
@@ -125,12 +130,12 @@ const updateChart = () => {
         color: (params: any) => {
           return params.dataIndex === 0
               ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#ff9a9a' },
-                { offset: 1, color: '#ff4e4e' }
+                {offset: 0, color: '#ff9a9a'},
+                {offset: 1, color: '#ff4e4e'}
               ])
               : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#9ac2ff' },
-                { offset: 1, color: '#4e8cff' }
+                {offset: 0, color: '#9ac2ff'},
+                {offset: 1, color: '#4e8cff'}
               ]);
         },
         borderRadius: [4, 4, 0, 0]
@@ -163,7 +168,6 @@ watch(year, (newVal) => {
 });
 
 onMounted(() => {
-  initChart();
   fetchData();
 });
 

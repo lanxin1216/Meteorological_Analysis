@@ -16,6 +16,7 @@ import {onMounted, onBeforeUnmount, ref, watch} from 'vue';
 import * as echarts from 'echarts';
 import {getSeasonalTemperatureUsingGet} from "@/api/weatherTrendController.ts";
 import dayjs from "dayjs";
+import {mockSeasonalTemperature} from "@/mock/mockSeasonalTemperature.ts";
 
 const props = defineProps<{ year: dayjs.Dayjs }>();
 
@@ -28,7 +29,9 @@ const isEmpty = ref(false);
 async function renderChart(year: dayjs.Dayjs) {
   const newYear = props.year.format('YYYY')
   loading.value = true;
-  const res = await getSeasonalTemperatureUsingGet({year: newYear});
+  // const res = await getSeasonalTemperatureUsingGet({year: newYear});
+  // todo mock数据
+  const res =  { data: mockSeasonalTemperature}
   if (res.data.code === 0 && chartRef.value) {
     isEmpty.value = res.data.data?.length === 0;
     if (!isEmpty.value) {
@@ -38,7 +41,7 @@ async function renderChart(year: dayjs.Dayjs) {
         return item?.avgTemp ?? 0;
       });
       const option = {
-        title: {text: `${year} 年四季平均温度对比图`},
+        title: {text: `${newYear} 年四季平均温度对比图`},
         tooltip: {trigger: 'axis'},
         xAxis: {type: 'category', data: seasons},
         yAxis: {type: 'value', name: '温度 (°C)'},

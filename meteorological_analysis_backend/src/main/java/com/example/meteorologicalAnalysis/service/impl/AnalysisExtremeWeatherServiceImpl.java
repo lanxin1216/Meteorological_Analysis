@@ -38,8 +38,8 @@ public class AnalysisExtremeWeatherServiceImpl implements AnalysisExtremeWeather
 
         results.forEach(item -> {
             String type = (String) item.get("type");
-            double value = ((Number) item.get("value")).doubleValue();
-            String time = (String) item.get("time");
+            double value = ((Number) item.get("temperature_value")).doubleValue();
+            String time = (String) item.get("time_str");
 
             if ("max".equals(type)) {
                 vo.setMaxTemperature(value);
