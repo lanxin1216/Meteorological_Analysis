@@ -40,13 +40,13 @@ public class BasicAnalysisServiceImpl implements BasicAnalysisService {
     }
 
     private List<WeatherDataVO> convertToVO(List<Map<String, Object>> rawData) {
-        for (Map<String, Object> map : rawData) {
-            System.out.println("Returned keys: " + map.keySet());
-        }
-
-
-        System.out.println("--------------------");
-        System.out.println("Map:" + rawData.get(0));
+//        for (Map<String, Object> map : rawData) {
+//            System.out.println("Returned keys: " + map.keySet());
+//        }
+//
+//
+//        System.out.println("--------------------");
+//        System.out.println("Map:" + rawData.get(0));
 
         return rawData.stream().map(map -> new WeatherDataVO(
                 ((Timestamp) map.get("data_time")).toLocalDateTime(),
