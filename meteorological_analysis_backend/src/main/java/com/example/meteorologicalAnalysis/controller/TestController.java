@@ -26,7 +26,7 @@ public class TestController {
      * 测试HDFS连接
      */
     @GetMapping("/hdfs")
-    public BaseResponse<?> testConnection() {
+    public BaseResponse<?> testHdfsConnection() {
         boolean isConnected = hdfsUtil.testConnection();
         return ResultUtils.success("HDFS连接状态：" + (isConnected ? "成功" : "失败"));
     }

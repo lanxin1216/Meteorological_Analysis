@@ -42,7 +42,7 @@ public class WeatherAnalysisExtremeController {
      * @return 每年风速超过阈值的天数统计
      */
     @GetMapping("/strong-wind-days")
-    public BaseResponse<List<StrongWindDaysDTO>> getStrongWindDays() {
-        return ResultUtils.success(analysisExtremeWeatherService.getStrongWindDaysStatistics());
+    public BaseResponse<List<StrongWindDaysDTO>> getStrongWindDays(@RequestParam(defaultValue = "10.0") double threshold) {
+        return ResultUtils.success(analysisExtremeWeatherService.getStrongWindDaysStatistics(threshold));
     }
 }

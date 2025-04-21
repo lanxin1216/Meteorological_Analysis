@@ -54,8 +54,10 @@ public class AnalysisExtremeWeatherServiceImpl implements AnalysisExtremeWeather
     }
 
     @Override
-    public List<StrongWindDaysDTO> getStrongWindDaysStatistics() {
-        double windSpeedThreshold = 10.0; // 风速阈值
+    public List<StrongWindDaysDTO> getStrongWindDaysStatistics(double windSpeedThreshold) {
+        if (windSpeedThreshold < 0) {
+            throw new IllegalArgumentException("风速阈值不能为负数");
+        }
 
         // 获取原始数据
         List<Map<String, Object>> rawData = analysisExtremeWeatherDao.findStrongWindDaysByYear(windSpeedThreshold);

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 趋势分析
+ */
 @RestController
 @RequestMapping("/api/weather/trend")
 public class WeatherTrendController {
