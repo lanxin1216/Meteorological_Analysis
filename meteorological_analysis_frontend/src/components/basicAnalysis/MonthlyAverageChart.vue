@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import {ref, onMounted, watch, nextTick} from 'vue';
 import * as echarts from 'echarts';
-import { getByYearUsingGet } from "@/api/weatherBasicAnalysisController.ts";
+import {getByYearUsingGet} from "@/api/weatherBasicAnalysisController.ts";
 import {type WeatherDataType, WeatherDataTypeLabel} from "@/constant/WeatherDataType.ts";
 import dayjs from "dayjs";
 import {message} from "ant-design-vue";
@@ -64,7 +64,7 @@ const fetchData = async () => {
     chartLoading.value = true;
     const year = props.year.format('YYYY');
     const res = await getByYearUsingGet({
-      year,
+      year: year,
       type: props.type
     });
 
@@ -175,8 +175,8 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
       data: sortedData.map(item => item.value),
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: '#1890ff' },
-          { offset: 1, color: '#36cbcb' }
+          {offset: 0, color: '#1890ff'},
+          {offset: 1, color: '#36cbcb'}
         ]),
         borderRadius: [4, 4, 0, 0]
       },
@@ -190,7 +190,7 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
       },
       markLine: {
         data: [
-          { type: 'average', name: '平均值' }
+          {type: 'average', name: '平均值'}
         ],
         label: {
           formatter: '平均值: {c}' + unit
@@ -215,13 +215,15 @@ const updateChart = (data: Array<{ label: string; value: any }>) => {
 };
 
 onMounted(() => {
-  initChart();
-  fetchData();
+  nextTick(() => {
+    initChart();
+    fetchData();
+  });
 });
 
 watch(() => [props.year, props.type], () => {
   fetchData();
-}, { immediate: true });
+}, {immediate: true});
 
 defineExpose({
   fetchData
@@ -231,6 +233,7 @@ defineExpose({
 <style scoped>
 #monthlyAverageChart {
   width: 100%;
+  min-height: 300px;
   background: #fff;
   padding: 16px;
   border-radius: 4px;

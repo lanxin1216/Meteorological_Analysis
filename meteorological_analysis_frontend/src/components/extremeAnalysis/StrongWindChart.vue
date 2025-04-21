@@ -21,18 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import * as echarts from 'echarts';
-import { getStrongWindDaysUsingGet } from '@/api/weatherAnalysisExtremeController.ts';
-import { message } from 'ant-design-vue';
-
-const props = defineProps<{
-  initialThreshold?: number;
-}>();
+import {getStrongWindDaysUsingGet} from '@/api/weatherAnalysisExtremeController.ts';
+import {message} from 'ant-design-vue';
 
 const emit = defineEmits(['update:threshold']);
 
-const threshold = ref(props.initialThreshold || 10);
+const threshold = ref(10);
 const data = ref<any[]>([]);
 const loading = ref(false);
 const chartRef = ref<HTMLElement | null>(null);
@@ -52,7 +48,7 @@ const resizeChart = () => {
 const fetchData = async () => {
   try {
     loading.value = true;
-    const res = await getStrongWindDaysUsingGet({ threshold: threshold.value });
+    const res = await getStrongWindDaysUsingGet({threshold: threshold.value});
     if (res.data.code === 0) {
       data.value = res.data.data;
       updateChart();
@@ -108,8 +104,8 @@ const updateChart = () => {
       data: data.value.map(item => item.days),
       itemStyle: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          { offset: 0, color: '#ff7b7b' },
-          { offset: 1, color: '#ff4e4e' }
+          {offset: 0, color: '#ff7b7b'},
+          {offset: 1, color: '#ff4e4e'}
         ]),
         borderRadius: [4, 4, 0, 0]
       },

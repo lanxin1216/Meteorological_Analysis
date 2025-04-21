@@ -40,13 +40,9 @@ import { getExtremeTemperaturesUsingGet } from '@/api/weatherAnalysisExtremeCont
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
-const props = defineProps<{
-  initialYear?: any;
-}>();
-
 const emit = defineEmits(['update:year']);
 
-const year = ref(props.initialYear || dayjs());
+const year = ref(dayjs());
 const data = ref<any>(null);
 const loading = ref(false);
 const chartRef = ref<HTMLElement | null>(null);

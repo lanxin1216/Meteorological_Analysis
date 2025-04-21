@@ -216,6 +216,7 @@ defineExpose({
 <style scoped>
 #hourlyDataChart {
   width: 100%;
+  min-height: 300px;
   background: #fff;
   padding: 16px;
   border-radius: 4px;

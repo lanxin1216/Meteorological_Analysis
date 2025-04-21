@@ -70,7 +70,7 @@
 import {ref, reactive} from 'vue'
 import {message} from 'ant-design-vue'
 import dayjs from 'dayjs'
-import {getTop500ByYearUsingGet} from "@/api/basicAnalysisController.ts";
+import {getTop500ByYearUsingGet} from "@/api/weatherBasicAnalysisController.ts";
 
 interface SearchForm {
   year: dayjs.Dayjs | null;
@@ -187,7 +187,7 @@ const fetchData = async () => {
   loading.value = true
   try {
     const year = searchForm.year.format('YYYY')
-    const response = await getTop500ByYearUsingGet({ year : year })
+    const response = await getTop500ByYearUsingGet({year: year})
 
     if (response.data.code === 0) {
       dataSource.value = transformData(response.data.data)

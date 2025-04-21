@@ -1,18 +1,23 @@
 <template>
-  <a-card title="温度与气压的月度相关性">
-    <a-spin :spinning="loading" tip="图表加载中...">
-      <a-empty v-if="isEmpty && !loading" description="暂无数据" class="chart-empty"/>
-      <div v-show="!isEmpty && !loading" ref="chartRef" class="chart"/>
-    </a-spin>
-  </a-card>
+  <div id="tempPressureChart">
+    <a-card title="温度与气压的月度相关性">
+      <div class="card-content">
+        <a-spin :spinning="loading" tip="图表加载中...">
+          <a-empty v-if="isEmpty && !loading" description="暂无数据" class="chart-empty"/>
+          <div v-show="!isEmpty && !loading" ref="chartRef" class="chart"/>
+        </a-spin>
+      </div>
+    </a-card>
+  </div>
 </template>
 
 <script setup lang="ts">
 import {ref, watch, onMounted} from 'vue'
 import * as echarts from 'echarts'
 import {getTempPressureCorrelationUsingGet} from "@/api/weatherCorrelationAnalysisController.ts";
+import dayjs from "dayjs";
 
-const props = defineProps<{ year: number | null }>()
+const props = defineProps<{ year: dayjs.Dayjs  }>()
 
 const chartRef = ref<HTMLDivElement | null>(null)
 let chart: echarts.ECharts
@@ -23,7 +28,8 @@ const isEmpty = ref(false)
 const fetchData = async () => {
   if (!props.year) return
   loading.value = true
-  const res = await getTempPressureCorrelationUsingGet({year: props.year})
+  const newYear = props.year.format('YYYY')
+  const res = await getTempPressureCorrelationUsingGet({year: newYear})
   if (res.data.code === 0) {
     isEmpty.value = res.data.data?.length === 0
     renderChart(res.data.data)
@@ -47,7 +53,9 @@ const renderChart = (data: any[]) => {
 
 onMounted(() => {
   if (chartRef.value) chart = echarts.init(chartRef.value)
-  if (props.year) fetchData()
+  if (props.year) {
+    fetchData()
+  }
 })
 
 watch(() => props.year, () => {
@@ -56,12 +64,16 @@ watch(() => props.year, () => {
 </script>
 
 <style scoped>
-.chart {
+#tempPressureChart .card-content  {
+  min-height: 300px;
+}
+
+#tempPressureChart .chart {
   height: 400px;
   width: 100%;
 }
 
-.chart-empty {
+#tempPressureChart .chart-empty {
   padding: 40px 0;
   text-align: center;
 }
