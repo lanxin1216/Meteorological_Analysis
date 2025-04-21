@@ -66,9 +66,9 @@ const fetchData = async () => {
   try {
     loading.value = true;
     const yearValue = year.value.year();
-    // const res = await getExtremeTemperaturesUsingGet({ year: yearValue });
+    const res = await getExtremeTemperaturesUsingGet({ year: yearValue });
     // todo mock数据
-    const res = {data: mockExtremeTemperatures};
+    // const res = {data: mockExtremeTemperatures};
     if (res.data.code === 0) {
       data.value = res.data.data;
       await nextTick();   // 等待 DOM 挂载

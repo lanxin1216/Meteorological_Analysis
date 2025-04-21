@@ -29,9 +29,9 @@ const isEmpty = ref(false);
 async function renderChart(year: dayjs.Dayjs) {
   const newYear = props.year.format('YYYY')
   loading.value = true;
-  // const res = await getSeasonalTemperatureUsingGet({year: newYear});
+  const res = await getSeasonalTemperatureUsingGet({year: newYear});
   // todo mock数据
-  const res =  { data: mockSeasonalTemperature}
+  // const res =  { data: mockSeasonalTemperature}
   if (res.data.code === 0 && chartRef.value) {
     isEmpty.value = res.data.data?.length === 0;
     if (!isEmpty.value) {

@@ -49,9 +49,9 @@ const resizeChart = () => {
 const fetchData = async () => {
   try {
     loading.value = true;
-    // const res = await getStrongWindDaysUsingGet({threshold: threshold.value});
+    const res = await getStrongWindDaysUsingGet({threshold: threshold.value});
     // todo mock数据
-    const res =  { data: mockStrongWindDays};
+    // const res =  { data: mockStrongWindDays};
       if (res.data.code === 0) {
       data.value = res.data.data;
         await nextTick();   // 等待 DOM 挂载

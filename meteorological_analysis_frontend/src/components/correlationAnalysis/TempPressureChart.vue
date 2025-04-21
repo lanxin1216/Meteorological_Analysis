@@ -30,9 +30,9 @@ const fetchData = async () => {
   if (!props.year) return
   loading.value = true
   const newYear = props.year.format('YYYY')
-  // todo API调用
-  // const res = await getTempPressureCorrelationUsingGet({year: newYear})
-  const res = { data: mockTempPressureCorrelation }
+  const res = await getTempPressureCorrelationUsingGet({year: newYear})
+  // todo mock数据
+  // const res = { data: mockTempPressureCorrelation }
   if (res.data.code === 0) {
     isEmpty.value = res.data.data?.length === 0
     renderChart(res.data.data)
