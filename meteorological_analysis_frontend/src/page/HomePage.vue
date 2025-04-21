@@ -17,6 +17,9 @@
 import {useRoute, useRouter} from 'vue-router'
 import {computed, ref, watch} from 'vue'
 import BasicAnalysisPage from "@/page/BasicAnalysisPage.vue";
+import ExtremeAnalysisPage from "@/page/ExtremeAnalysisPage.vue";
+import CorrelationAnalysisPage from "@/page/CorrelationAnalysisPage.vue";
+import TrendAnalysisPage from "@/page/TrendAnalysisPage.vue";
 
 defineOptions({
   name: 'adminSystemManagePage',
@@ -28,6 +31,22 @@ const originItems = [
     key: 'basicAnalysis',
     label: '基础分析',
     component: BasicAnalysisPage,
+  },
+  {
+    key: 'extremeAnalysis',
+    label: '极端分析',
+    component: ExtremeAnalysisPage,
+  },
+  {
+    key: 'trendAnalysis',
+    label: '趋势分析',
+    component: TrendAnalysisPage,
+
+  },
+  {
+    key: 'correlationAnalysis',
+    label: '相关性分析',
+    component: CorrelationAnalysisPage,
   }
 ]
 

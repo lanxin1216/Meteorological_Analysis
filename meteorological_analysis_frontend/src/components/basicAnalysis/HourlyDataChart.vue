@@ -37,10 +37,10 @@
 <script setup lang="ts">
 import {ref, onMounted, watch, computed} from 'vue';
 import * as echarts from 'echarts';
-import {getByDayUsingGet} from '@/api/basicAnalysisController.ts';
 import {type WeatherDataType, WeatherDataTypeLabel} from "@/constant/WeatherDataType.ts";
 import dayjs from "dayjs";
 import {message} from "ant-design-vue";
+import {getByDayUsingGet} from "@/api/weatherBasicAnalysisController.ts";
 
 const props = defineProps<{
   year: dayjs.Dayjs | null;
