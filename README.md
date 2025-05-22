@@ -1,13 +1,9 @@
-### 基于Hadoop的气象数据分析平台设计文档
+### 基于 Hadoop + Hive 的哈尔滨市气象数据分析平台
 
----
-
-#### **1. 项目概述**
+#### **项目概述**
 本项目旨在构建一个基于Hadoop和Hive的气象数据分析平台，通过HDFS存储海量气象数据，利用Hive构建数据仓库并执行分析任务，后端采用Spring Boot提供数据接口，前端通过图表展示分析结果。核心目标是为气象研究和预报提供数据支持，包括趋势分析、地理分布、相关性分析等。
 
----
-
-#### **2. 系统架构设计**
+#### **系统架构设计**
 - **数据存储层**：HDFS存储原始气象数据（CSV/JSON格式）。
 - **数据处理层**：Hive数据仓库，通过Hive SQL执行批量分析。
 - **后端服务层**：Spring Boot提供RESTful API，集成Hive JDBC执行查询。
@@ -15,63 +11,96 @@
 
 架构示意：用户上传数据至HDFS → Hive数仓处理 → Spring Boot API查询 → 前端图表展示
 
----
+#### **开发&运行环境**
 
-#### **3. 数据流程设计**
-1. **数据采集**：  
-   - 来源：公开气象站数据（如NOAA）或模拟数据生成工具。  
-   - 字段：时间戳、温度、湿度、风速、气压、气象站ID、经纬度。  
-   - 格式：CSV文件，示例：  
-     ```csv
-     timestamp,temperature,humidity,wind_speed,pressure,station_id,latitude,longitude
-     2023-01-01 12:00:00,25.5,60,10.2,1013.2,ST001,39.9042,116.4074
-     ```
+##### 开发环境
 
-2. **数据上传**：  
-   - Spring Boot提供文件上传接口，调用HDFS API将数据存入 `/weather/raw` 目录。  
-   - 数据清洗：过滤缺失值（如湿度为-9999的异常记录）。
+- java - JDK 1.8
+- SpringBoot 2.7.5
+- Hadoop 3.1.3
+- Hive 3.1.3
+- CentOS7 操作系统
+- Vue3
+- Ant Design Vue
 
-3. **数仓搭建**：  
-   - Hive表定义（按时间分区）：  
-     ```sql
-     CREATE EXTERNAL TABLE weather_data (
-         station_id STRING,
-         temperature DOUBLE,
-         humidity DOUBLE,
-         wind_speed DOUBLE,
-         pressure DOUBLE,
-         latitude DOUBLE,
-         longitude DOUBLE
-     )
-     PARTITIONED BY (event_time STRING)
-     ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-     LOCATION '/weather/hive';
-     ```
+##### 部署&运行环境
 
-4. **数据分析**：通过Hive SQL执行查询，结果存入HDFS或MySQL供前端调用。
+- Hadoop 集群：3节点（1 NameNode + 2 DataNode）。  
+- HDFS：保存实际数据。
+- Hive：元数据使用 MySQL ，Thrift Server 提供 JDBC 连接。  
 
----
+#### 项目运行
 
-#### **4. 功能模块详细设计**
-- **数据管理模块**：  
-  - 文件上传接口（POST `/api/upload`）。  
-  - 数据清洗逻辑（过滤无效值，格式转换）。  
+- 启动 Hadoop
 
-- **数据分析模块**：  
-  - 基础统计：月平均温度、最高风速、湿度分布。  
-  - 趋势分析：年度温度变化、季节性气压波动。  
-  - 地理分析：不同区域的湿度/风速热力图。  
-  - 相关性分析：温度与湿度的相关系数。  
+  ```bash
+  start-all.sh
+  ```
 
-- **可视化模块**：  
-  - 折线图展示温度趋势。  
-  - 热力图展示区域湿度分布。  
-  - 散点图呈现温度-湿度相关性。  
+- 启动 Hive数据仓库
 
----
+  ```bash
+  bin/hive --service metastore &
+  bin/hive --service hiveserver2 &
+  bin/hive
+  ```
 
-#### **5. 数据分析方法与Hive SQL示例**
+- 后端运行
+- 前端运行
+
+> HDFS目录权限移除处理：
+> 给项目需要的目录授权：
+>
+> ```bash
+> hdfs dfs -chmod -R 777 /weather/hive/weather_analysis
+> hdfs dfs -chmod -R 777 /weather/hive
+> hdfs dfs -chmod 777 /weather/raw
+> hdfs dfs -chmod 777 /weather
+> ```
+
+#### 数据来源
+
+ 数据来源：美国国家气候数据中心（NCDC）
+
+- ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-lite/
+- 获取哈尔滨市监测站编号：https://www.ncei.noaa.gov/maps/daily/
+- 哈尔滨市编号：509530
+
+- 格式：CSV文件
+
+#### **处理流程**
+**数仓搭建**：  
+
+- Hive表定义（按时间分区）：  
+  ```sql
+  CREATE EXTERNAL TABLE weather_data (
+      station_id STRING,
+      temperature DOUBLE,
+      humidity DOUBLE,
+      wind_speed DOUBLE,
+      pressure DOUBLE,
+      latitude DOUBLE,
+      longitude DOUBLE
+  )
+  PARTITIONED BY (event_time STRING)
+  ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+  LOCATION '/weather/hive';
+  ```
+
+**数据上传** 
+
+- Spring Boot提供文件上传接口，调用HDFS API将数据存入 `/weather/raw` 目录。  
+- 数据清洗：过滤缺失值（如湿度为-9999的异常记录）。
+
+**数据清洗**：
+
+- 系统对数据进行清洗。
+
+**数据分析**：通过Hive SQL执行查询，结果存入HDFS或MySQL供前端调用。
+
+#### **部分Hive SQL示例**
 1. **月平均温度计算**：  
+   
    ```sql
    SELECT 
        SUBSTR(event_time, 1, 7) AS month,
@@ -79,7 +108,7 @@
    FROM weather_data
    GROUP BY SUBSTR(event_time, 1, 7);
    ```
-
+   
 2. **地区湿度分布**：  
    ```sql
    SELECT 
@@ -90,13 +119,15 @@
    ```
 
 3. **温度-湿度相关性分析**：  
+   
    ```sql
    SELECT 
        CORR(temperature, humidity) AS correlation
    FROM weather_data;
    ```
-
+   
 4. **年度极端风速检测**：  
+   
    ```sql
    SELECT 
        station_id,
@@ -106,44 +137,7 @@
    GROUP BY station_id;
    ```
 
----
-
-#### **6. 接口设计（REST API）**
-- **数据上传**：  
-  `POST /api/upload`  
-  请求体：CSV文件，响应：HDFS存储路径。  
-
-- **查询接口**：  
-  - 温度趋势：`GET /api/analysis/temperature?year=2023`  
-    响应：`{ "months": ["2023-01", ...], "temps": [25.5, ...] }`  
-  - 湿度分布：`GET /api/analysis/humidity`  
-    响应：`[ { "location": "39.9,116.4", "value": 60 }, ... ]`  
-
----
-
-#### **7. 部署与运行环境**
-- **Hadoop集群**：3节点（1 NameNode + 2 DataNode）。  
-- **Hive**：MetaStore使用MySQL，Thrift Server提供JDBC连接。  
-- **Spring Boot**：部署在Tomcat，配置Hive数据源。  
-- **前端**：Nginx托管静态页面，调用后端API。  
-
----
-
-#### **8. 优化与扩展**
-- **性能优化**：  
-  - Hive表按时间和地区分区。  
-  - 使用ORC格式存储数据，提升查询速度。  
-- **扩展功能**：  
-  - 实时分析：集成Spark Streaming处理实时数据流。  
-  - 预测模型：调用Python ML模型进行温度预测。  
-
-
-
-# 数据分析
-
-## 极端天气分析
-
-### 年度极端温度分析
+5. **年度极端温度分析**
 
 ```
 -- 每年最高/最低温度及发生日期
@@ -163,9 +157,7 @@ FROM (
 GROUP BY year;
 ```
 
-### 强风天气统计
-
-- 每年风速超过阈值(如10m/s)的天数
+6. **每年风速超过阈值(如10m/s)的天数**
 
 ```
 -- 每年风速超过阈值(如10m/s)的天数
@@ -177,9 +169,7 @@ WHERE wind_speed > 10
 GROUP BY year;
 ```
 
-## 2. 趋势分析
-
-### 2.1 温度长期趋势
+7. **温度长期趋势**
 
 ```
 -- 近5年每月平均温度变化
@@ -195,7 +185,7 @@ GROUP BY year, month
 ORDER BY year, month;
 ```
 
-### 2.2 季节变化分析
+8. **季节变化分析**
 
 ```
 -- 四季平均温度对比(北半球)
@@ -219,9 +209,7 @@ GROUP BY year,
 ORDER BY year, season;
 ```
 
-## 3. 相关性分析
-
-### 3.1 温度-气压相关性
+9. **温度-气压相关性**
 
 ```
 -- 每月温度与气压的相关系数
@@ -234,7 +222,7 @@ GROUP BY year, month
 ORDER BY year, month;
 ```
 
-### 3.2 露点温度与相对湿度关系
+10. **露点温度与相对湿度关系**
 
 ```
 -- 露点温度与温度差值的分布

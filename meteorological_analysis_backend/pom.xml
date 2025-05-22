@@ -13,19 +13,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>meteorological_analysis_backend</name>
     <description>meteorological_analysis_backend</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>1.8</java.version>
     </properties>
